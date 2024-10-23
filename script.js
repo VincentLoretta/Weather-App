@@ -9,15 +9,17 @@ const weatherResult = document.getElementById("weatherResult");
 
 const apiKey = "20bfbfd009ae71376cd117af77318b02"; // Replace with your OpenWeatherMap API key
 
+// Set default background on page load
+updateBackground("default");
 weatherButton.addEventListener("click", getWeather);
 
 async function getWeather() {
   const city = cityInput.value;
   if (!city) {
-    alert("Please enter a city name");
+    alert("Please Enter a City Name");
     return;
   }
-
+  
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
 
   try {
@@ -34,6 +36,10 @@ async function getWeather() {
     const temperature = `${Math.round(data.main.temp)}°F`;
     const description = data.weather[0].description;
     const humidity = `Humidity: ${data.main.humidity}%`;
+    const weatherCondition = data.weather[0].main.toLowerCase(); // e.g., "clear", "clouds", "rain"
+    
+    // Update the background based on weather condition
+    updateBackground(weatherCondition);
 
     // Display the results
     locationEl.textContent = `Location: ${location}`;
@@ -44,6 +50,35 @@ async function getWeather() {
     // Show the weather result div
     weatherResult.style.display = "block";
   } catch (error) {
+    alert("Failed to fetch weather data. Please try again.");
     console.error("Error fetching weather data:", error);
   }
+}
+
+function updateBackground(condition) {
+  const body = document.body;
+
+  switch (condition) {
+    case 'clear':
+      body.style.backgroundImage = "url('images/clear-sky.jpg')";
+      break;
+    case 'clouds':
+      body.style.backgroundImage = "url('images/cloudy-sky.jpg')";
+      break;
+    case 'rain':
+      body.style.backgroundImage = "url('images/rainy-sky.jpg')";
+      break;
+    case 'snow':
+      body.style.backgroundImage = "url('images/snowy-sky.jpg')";
+      break;
+    case 'thunderstorm':
+      body.style.backgroundImage = "url('images/thunderstorm.jpg')";
+      break;
+    default:
+      body.style.backgroundImage = "url('images/default-sky.jpg')"; // Default image
+      break;
+  }
+
+  // Optional: Add some styling for a smooth transition
+  body.style.transition = "background-image 0.5s ease-in-out";
 }
