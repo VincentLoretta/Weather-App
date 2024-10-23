@@ -74,6 +74,9 @@ function updateBackground(condition) {
     case 'thunderstorm':
       body.style.backgroundImage = "url('images/thunderstorm.jpg')";
       break;
+    case 'fog':
+        body.style.backgroundImage = "url('images/fog-sky.jpg')";
+        break;
     default:
       body.style.backgroundImage = "url('images/default-sky.jpg')"; // Default image
       break;
